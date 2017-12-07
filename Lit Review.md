@@ -3,8 +3,8 @@ nav_include: 3
 title: Literature Review
 ---
 
-## Contents
 
+## Contents
 {:.no_toc}
 *  
 {: toc}
