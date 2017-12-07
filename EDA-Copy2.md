@@ -1,69 +1,19 @@
 ---
 nav_include: 4
 title: Models
-notebook: EDA.ipynb
+notebook: EDA-Copy2.ipynb
 ---
 
 
-```python
-import numpy as np
-import pandas as pd
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.neighbors import KNeighborsRegressor as KNN
-from sklearn.linear_model import RidgeCV
-from sklearn.linear_model import Ridge
-from sklearn.linear_model import LinearRegression as Linear
-from sklearn.linear_model import LogisticRegressionCV
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.preprocessing import Imputer
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import cross_val_score
-import sklearn.metrics as metrics
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import classification_report
-from sklearn.metrics import r2_score
-from scipy import stats
-from bs4 import BeautifulSoup
-import urllib
-import sys
-import seaborn as sns
-import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.cm as cmx
-import matplotlib.colors as colors
-import matplotlib.patches as patches
-import requests 
-%matplotlib inline
-
-import warnings
-warnings.filterwarnings("ignore")
-
-sns.set_palette("Blues_d")
-
-```
 
 
 
 
-```python
-df = pd.read_excel('Census_2/2_Clean_Data/Crime_Census_Merged_Imputed_No_Dummies.xlsx')
-```
 
 
 
 
-```python
-df.msa_id[df.msa_id== 31080] = 31100 
-df['All families - Percent below poverty level; Families'][df['All families - Percent below poverty level; Families']< 0] = 0 
-df['Employed; EDUCATIONAL ATTAINMENT - Population 25 to 64 years'][df['Employed; EDUCATIONAL ATTAINMENT - Population 25 to 64 years']< 0] = 0 
-df['Total; Median earnings (dollars)'][df['Total; Median earnings (dollars)']< 0] = 0 
 
-```
 
 
 The following table shows us some of the main variables that we will be using for for our exploratory data analysis. We have annual observations of US Metropolitan State Areas for the period 2006-2016 with their respective IDs and with demographic variables such as total population, median income, poverty and education levels, among others. 
@@ -161,7 +111,7 @@ The 18 MSAs chosen for the analysis and their respective populations in 2016 are
 
 
 
-![png](EDA_files/EDA_8_0.png)
+![png](EDA-Copy2_files/EDA-Copy2_8_0.png)
 
 
 
@@ -177,7 +127,7 @@ The 18 MSAs chosen for the analysis and their respective populations in 2016 are
 
 
 
-![png](EDA_files/EDA_11_0.png)
+![png](EDA-Copy2_files/EDA-Copy2_11_0.png)
 
 
 Because the purpose of our analysis is to build a model to predict murder in the next few years, below we show the average number of reported murders per 100,000 inhabitants for the chosen MSAs across 2006-2016. From the graph below we can see that the MSAs with the highest murder rates (among the MSAs chosen) are those corresponding to Detroit-Warren-Livonia and New York-Newark-Jersey City. 
@@ -187,7 +137,7 @@ Because the purpose of our analysis is to build a model to predict murder in the
 
 
 
-![png](EDA_files/EDA_13_0.png)
+![png](EDA-Copy2_files/EDA-Copy2_13_0.png)
 
 
 
@@ -203,7 +153,7 @@ When we assess the correlation between these different types of crime we can see
 
 
 
-![png](EDA_files/EDA_16_0.png)
+![png](EDA-Copy2_files/EDA-Copy2_16_0.png)
 
 
 
@@ -228,7 +178,7 @@ When we assess the number of reported murders per 100,000 inhabitants across the
 
 
 
-![png](EDA_files/EDA_20_1.png)
+![png](EDA-Copy2_files/EDA-Copy2_20_1.png)
 
 
 
@@ -257,7 +207,7 @@ We assess the correlation between murder rates and some of the demographic varia
 
 
 
-![png](EDA_files/EDA_24_0.png)
+![png](EDA-Copy2_files/EDA-Copy2_24_0.png)
 
 
 For the following analysis we use all 400+ MSAs in the US and limit our sample to the year 2016. Moreover, we create a variable for "high-murder" areas, where "high-murder" areas are those MSAs where the murder rate exceeds the median murder rate for 2016, which was approximately 4. 
@@ -272,7 +222,7 @@ Our most interesting finding is related to median earnings. We observe that, on 
 
 
 
-![png](EDA_files/EDA_26_0.png)
+![png](EDA-Copy2_files/EDA-Copy2_26_0.png)
 
 
 

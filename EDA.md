@@ -1,9 +1,5 @@
 
----
-nav_include: 2
-title: EDA
-notebook: EDA.ipynb
----
+
 
 ```python
 import numpy as np
