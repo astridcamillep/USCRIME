@@ -13,8 +13,7 @@ df = pd.read_csv('Crime_Census_Employment.csv')
 ```
 
 
-As you noticed, we worked with two different datasets (though we commented one out). Both datasets contain both the FBI crime data and census data merged on the Metropolitan Statistical area level (MSA). Our baseline model (linear regression) uses the typical census data (MSA demographics, population, employment, level of education, etc) to predict murder rate, while our enhanced models (Random Forest, Adaboost, OLS) includes more variables such the number of police available in the MSA, the number of mental health workers, the average salary per hour for police and that of mental health workers. We also attempted to include gun ownership/sales for each MSA, but we couldn't find the right data. We believe that adding these variables to the census data should improve our model performance. 
-
+For this project we worked with two different datasets. Both datasets contain the FBI crime data and census data merged at the Metropolitan Statistical Area (MSA) level. Our baseline model (OLS) uses data from the census (MSA demographics, population, employment, level of education, etc.) to predict murder rate, while our enhanced models (Random Forest, Adaboost, OLS) include more variables such as the number of police available in the MSA, the number of mental health workers, and their respective salaries per hour. 
 
 
 ```python
@@ -727,7 +726,7 @@ df.shape
 
 
 
-After merging around 280+ census data variables with 8 FBI crime data variables, and after creating a dummy variable for every MSA, we end up with 629 variables in total. Since we have about 2700 observations which is 4 times bigger than the number of variables, we won't run into a dimensionality problem and therefore don't see a need to reduce the number of variables right away. 
+After merging around 280+ census data variables with 8 FBI crime data variables, and after creating a dummy variable for every MSA, we end up with 629 variables in total. Since we have about 2700 observations which is 4 times bigger than the number of variables, we won't run into a dimensionality problem and therefore don't see a need to reduce the number of variables at this stage of the analysis.  
 
 
 
@@ -1991,10 +1990,9 @@ df = df.drop(["Unnamed: 0",'msa_id', "rep_rape", "rep_murder", "rep_robbery", "r
 ```
 
 
-We removed all crime variables other than our depedent variable (murder rate) because we believe these variables are highly correlated with our dependent variable. We also often don't have access to this data until the end of the year.
+We removed all crime variables other than our dependent variable (murder rate) because we believe these variables are highly correlated with our dependent variable. We also often don't have access to this data until the end of the year.
 
-Our approach is to try and forecast future crime based on past crime. We used the data from 2006 to 2015 to predict crime in 2016. 
-
+Our approach is to try and forecast future murder rates based on past behavior. We used the data from 2006 to 2015 to build a model to predict murder in 2016 using data from this year. So, if for a given year we have data on demographics, but we're missing data on murder rates, our model would allow for predicting these murder rates. Moreover, demographic variables experience little variation over time across geographic areas, which make these variables easier to predict than others related to crime. 
 
 
 ```python
@@ -2088,11 +2086,9 @@ plt.title("Linear Regression Residuals fitted Against Predicted Crime")
 ![png](Final_Project_files/Final_Project_24_1.png)
 
 
-Our baseline model above (Linear Regression) has a R-squared score of 0.48, using our model on
-the data explains 48% of the variance in the dependent variable. From the residuals plot, we can also see that this is the best our linear regression can do: the residuals are relatively stochastic. Our next step is to use more advanced models, specifically, tree based models. These models are known to work well with high dimensional data with a mix of categorical and continuous variables. These models also allow us to tune different parameters (number of estimators, etc) to maximize the performance.
+Our baseline model above (Linear Regression) has a R-squared score of 0.48, which means that our predictors can explain 48% of the variance in the dependent variable. From the residuals plot, we can also see that this is the best our linear regression can do as the residuals are relatively stochastic and centered around zero. Our next step is to use more advanced models, specifically, tree-based models. These models are known to work well with high dimensional data with a mix of categorical and continuous variables. These models also allow us to tune different parameters (number of estimators, etc.) to maximize its performance.
 
-We try 2 different models: Random Forest, Adaboost
-
+We try 2 different models: Random Forest and Adaboost.
 
 
 ```python
@@ -2243,7 +2239,7 @@ print("Average Murder Rate 2016:", y_test.mean())
     Average Murder Rate 2016: 4.873303063571736
 
 
-Random Forest with a 1000 trees, using the larger dataset, has the best performance of all the models we use (including the baseline model) on R-squared score and on mean absolute value. This is consistent for both 2014 and 2016. For 2016, Random Forest is able to explain 54% variance in the dependent variable and can predict the rate within 1.65 above or below the actual murder rate on average. Note that the average  murder for 2016 is 4.87. 
+Random Forest with 1000 trees, using the larger dataset, has the best performance of all the models we use (including the baseline model) on R-squared score and on Mean Absolute Error. This is consistent for both 2014 and 2016. For 2016, Random Forest is able to explain 54% of the variance in murder rates across MSAs and can predict these rates within 1.65 points above or below the actual murder rate on average. Note that the average murder for 2016 is 4.87. 
 
 # Residual Analysis 
 
@@ -2402,7 +2398,7 @@ lift(y_test, ABR_predictions, weight,n=10,xlab='Predicted Decile',\
 ![png](Final_Project_files/Final_Project_38_0.png)
 
 
-The above lift curves show how well we're predicting smaller values vs larger values in the test dataset. With linear regression, we are doing much better predicting for MSAs with large murder rates but not as well for those small murder rates. With random forest, we are doing better for those with with MSAs with small rates and those with large states, but not as well for those in the middle (two points in the graph are off from the actual). AdaBoost does better than the baseline model but not as well as Random Forest. 
+The above lift curves show how well we're predicting low vs high values of murder rates in the test dataset. With linear regression, we are doing much better predicting for MSAs with high murder rates but not as well for those with low murder rates. With Random Forest, we are doing better for those  MSAs in the extremes (MSAs with either low or high murder rates), but not as well for those in the middle. AdaBoost does better than the baseline model but not as well as Random Forest. 
 
 # Identifying Important Variables
 
